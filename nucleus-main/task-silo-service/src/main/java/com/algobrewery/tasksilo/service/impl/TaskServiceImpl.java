@@ -37,8 +37,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public CompletableFuture<CreateTaskInternalResponse> createTask(CreateTaskInternalRequest request) {
-        return userServiceGateway.getUser(request.getRequestContext(), request.getTaskDTO().getAssigneeUuid())
-                .thenCompose(userId -> saveTask(request.getTaskDTO()))
+        // Skip user validation and directly save the task
+        return saveTask(request.getTaskDTO())
                 .thenCompose(this::buildCreateTaskInternalResponse)
                 .exceptionally(this::handleCreateTaskException);
     }
@@ -93,8 +93,8 @@ public class TaskServiceImpl implements TaskService {
 
     public CompletableFuture<GetTaskInternalResponse> getTask(GetTaskInternalRequest request) {
         return CompletableFuture.completedFuture(
-                Specification.where(withTaskUuid(request.getTaskUuid()))
-                             .and(withOrganizationUuid(request.getRequestContext().getAppOrgUuid())))
+                        Specification.where(withTaskUuid(request.getTaskUuid()))
+                                .and(withOrganizationUuid(request.getRequestContext().getAppOrgUuid())))
                 .thenCompose(this::getTask)
                 .thenCompose(this::buildGetTaskInternalResponse)
                 .exceptionally(this::handleGetTaskException);
@@ -149,5 +149,4 @@ public class TaskServiceImpl implements TaskService {
         }
         throw new CompletionException(new ServiceException(cause));
     }
-
 }

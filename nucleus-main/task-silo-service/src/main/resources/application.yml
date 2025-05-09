@@ -5,9 +5,9 @@ spring:
   application:
     name: task-silo-service
   datasource:
-    url: jdbc:postgresql://task-silo-db-test-2.culss6gmw8na.us-east-1.rds.amazonaws.com:5432/postgres
-    username: tasksilodbtest
-    password: tasksilodbpwd
+    url: jdbc:postgresql://mytest.culss6gmw8na.us-east-1.rds.amazonaws.com:5432/postgres
+    username: postgres
+    password: Sindhuj12
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
